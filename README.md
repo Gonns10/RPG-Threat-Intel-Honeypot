@@ -1,7 +1,7 @@
 # RPG Threat Intel Honeypot: PHP2Shell Sensor
 
 ## Overview
-This project is a targeted HTTP honeypot developed to capture in-the-wild exploitation attempts of the recent "PHP2Shell" memory corruption vulnerabilities (CVE-2026-109618, CVE-2026-109619) detailed by Wiz Research. 
+This project is a targeted HTTP honeypot developed to capture in-the-wild exploitation attempts of the recent "PHP2Shell" memory corruption vulnerabilities (CVE-2026-109618, CVE-2026-109619) detailed by Wiz Research ([Wiz.io](https://www.wiz.io/blog/php2shell-php-rce)). 
 
 While traditional honeypots look for application-level command injection strings, this sensor is engineered to detect the specific HTTP protocol anomalies associated with PHP engine memory exhaustion and Use-After-Free (UAF) exploitation. 
 
