@@ -1,45 +1,6 @@
 # RPG Threat Intel Honeypot: PHP2Shell Sensor
 
 ## Overview
-This project is a targeted HTTP honeypot developed to capture in-the-wild exploitation attempts of the recent "PHP2Shell" memory corruption vulnerabilities (CVE-2026-109618, CVE-2026-109619) detailed by Wiz Research ([Wiz.io](https://www.wiz.io/blog/php2shell-php-rce)). 
-
-While traditional honeypots look for application-level command injection strings (e.g., `?cmd=ls`), this sensor is engineered to detect the specific HTTP protocol anomalies associated with PHP engine memory exhaustion and Use-After-Free (UAF) exploitation.
-
-To combat alert fatigue, the raw Threat Intelligence (TI) data is parsed and visualized via the console as a Gamified Turn-Based RPG Battle Log.
-
-
-## Architecture & Detection Logic
-The PHP2Shell vulnerability resides in the PHP engine's core C code, specifically triggered during Out-Of-Memory (OOM) aborts. Because this honeypot is built in Python (Flask), it is completely immune to the PHP memory corruption, allowing it to safely observe and log the attack chain without crashing.
-
-The `ExploitSignatures` engine monitors for the two distinct phases of the exploit:
-
-1. **Phase 1: OOM Trigger (State Corruption)**
-   Attackers attempt to exhaust the PHP worker's 128MB limit to force a long jump abort. The honeypot detects this by analyzing anomalous `Content-Length` headers (e.g., >50MB) targeting lightweight endpoints, without actually processing the heavy payload.
-2. **Phase 2: Use-After-Free (Memory Injection)**
-   Once the stale state is achieved, attackers send raw binary, memory pointers, or NOP sleds (`\x90\x90...` / `\x41\x41...`). The honeypot inspects the raw byte stream of POST requests to identify memory padding and shellcode signatures.
-
-## Features
-- **Engine-Level Spoofing:** Alters HTTP headers to masquerade as an outdated `PHP/8.2.0` engine.
-- **Protocol Anomaly Detection:** Identifies OOM attempts via header manipulation rather than relying on application-layer WAF rules.
-- **Binary Payload Inspection:** Scans raw request bytes for memory exploitation patterns.
-- **Gamified CLI Visualization:** Transforms complex memory exploitation attempts into readable, retro-style RPG encounters.
-- **Persistent Logging:** Automatically generates timestamped, structured logs for post-incident analysis.
-
-## Quick Start
-
-### Prerequisites
-- Python 3.8+
-
-### Installation
-1. Clone the repository:
-   ```bash
-   git clone [https://github.com/YourUsername/RPG-Threat-Intel-Honeypot.git](https://github.com/YourUsername/RPG-Threat-Intel-Honeypot.git)
-   cd RPG-Threat-Intel-Honeypot
-
-
-# RPG Threat Intel Honeypot: PHP2Shell Sensor
-
-## Overview
 This project is a targeted HTTP honeypot developed to capture in-the-wild exploitation attempts of the recent "PHP2Shell" memory corruption vulnerabilities (CVE-2026-109618, CVE-2026-109619) detailed by Wiz Research. 
 
 While traditional honeypots look for application-level command injection strings, this sensor is engineered to detect the specific HTTP protocol anomalies associated with PHP engine memory exhaustion and Use-After-Free (UAF) exploitation. 
