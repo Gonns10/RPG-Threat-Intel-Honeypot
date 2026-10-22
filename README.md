@@ -29,3 +29,16 @@ In modern Security Operations Centers (SOCs), alert fatigue is a real issue. Thi
    ```bash
    git clone [https://github.com/YourUsername/RPG-Threat-Intel-Honeypot.git](https://github.com/YourUsername/RPG-Threat-Intel-Honeypot.git)
    cd RPG-Threat-Intel-Honeypot
+   
+Install dependencies:
+
+   ```bash
+   pip install -r requirements.txt
+   Run the honeypot:
+
+
+   python src/app.py
+
+```
+# Disclaimer
+This project is built strictly for educational purposes and personal portfolio demonstration. It is meant to be run in a safe, controlled, and isolated environment. Do not use this code in production networks without proper security hardening.
