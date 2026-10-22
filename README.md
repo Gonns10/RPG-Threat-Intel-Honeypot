@@ -1,23 +1,31 @@
-# RPG Threat Intel Honeypot
-
-![Python](https://img.shields.io/badge/Python-3.x-blue.svg)
-![Flask](https://img.shields.io/badge/Flask-3.0-lightgrey.svg)
-![Cybersecurity](https://img.shields.io/badge/Cybersecurity-Blue%20Team-red.svg)
+# RPG Threat Intel Honeypot: PHP2Shell Sensor
 
 ## Overview
-**RPG Threat Intel Honeypot** is a lightweight, Proof-of-Concept (PoC) HTTP honeypot designed to intercept and log automated web attacks (like RCE or Command Injection attempts targeting PHP endpoints). 
+This project is a targeted HTTP honeypot developed to capture in-the-wild exploitation attempts of the recent "PHP2Shell" memory corruption vulnerabilities (CVE-2026-109618, CVE-2026-109619) detailed by Wiz Research ([Wiz.io](https://www.wiz.io/blog/php2shell-php-rce)). 
 
-Instead of traditional, hard-to-read server logs, this project parses inbound attack data (IPs, User-Agents, and Payloads) and translates them into a **Gamified Turn-Based RPG Battle Log**. This provides a unique, highly readable visualization of Threat Intelligence (TI) data.
+While traditional honeypots look for application-level command injection strings (e.g., `?cmd=ls`), this sensor is engineered to detect the specific HTTP protocol anomalies associated with PHP engine memory exhaustion and Use-After-Free (UAF) exploitation.
+
+To combat alert fatigue, the raw Threat Intelligence (TI) data is parsed and visualized via the console as a Gamified Turn-Based RPG Battle Log.
 
 ## Why Gamification?
 In modern Security Operations Centers (SOCs), alert fatigue is a real issue. This project serves as a creative exercise in **data visualization**. By formatting raw Indicators of Compromise (IoCs) and attack vectors as "RPG encounters", it demonstrates how security event logging can be restructured for better readability and engagement without losing technical rigor.
 
+## Architecture & Detection Logic
+The PHP2Shell vulnerability resides in the PHP engine's core C code, specifically triggered during Out-Of-Memory (OOM) aborts. Because this honeypot is built in Python (Flask), it is completely immune to the PHP memory corruption, allowing it to safely observe and log the attack chain without crashing.
+
+The `ExploitSignatures` engine monitors for the two distinct phases of the exploit:
+
+1. **Phase 1: OOM Trigger (State Corruption)**
+   Attackers attempt to exhaust the PHP worker's 128MB limit to force a long jump abort. The honeypot detects this by analyzing anomalous `Content-Length` headers (e.g., >50MB) targeting lightweight endpoints, without actually processing the heavy payload.
+2. **Phase 2: Use-After-Free (Memory Injection)**
+   Once the stale state is achieved, attackers send raw binary, memory pointers, or NOP sleds (`\x90\x90...` / `\x41\x41...`). The honeypot inspects the raw byte stream of POST requests to identify memory padding and shellcode signatures.
+
 ## Features
-- **Endpoint Spoofing:** Simulates classic vulnerable endpoints (e.g., `/?cmd=`, `/index.php`).
-- **Header Manipulation:** Spoofs HTTP response headers to masquerade as an outdated Apache/PHP server.
-- **Payload Interception:** Safely catches GET/POST parameters without execution.
-- **IoC Gathering:** Extracts and logs Attacker IP, Timestamp, User-Agent, and exact injection payloads.
-- **Custom Event Logger:** Outputs terminal logs styled as retro RPG battles.
+- **Engine-Level Spoofing:** Alters HTTP headers to masquerade as an outdated `PHP/8.2.0` engine.
+- **Protocol Anomaly Detection:** Identifies OOM attempts via header manipulation rather than relying on application-layer WAF rules.
+- **Binary Payload Inspection:** Scans raw request bytes for memory exploitation patterns.
+- **Gamified CLI Visualization:** Transforms complex memory exploitation attempts into readable, retro-style RPG encounters.
+- **Persistent Logging:** Automatically generates timestamped, structured logs for post-incident analysis.
 
 ## Quick Start
 
@@ -29,17 +37,3 @@ In modern Security Operations Centers (SOCs), alert fatigue is a real issue. Thi
    ```bash
    git clone [https://github.com/YourUsername/RPG-Threat-Intel-Honeypot.git](https://github.com/YourUsername/RPG-Threat-Intel-Honeypot.git)
    cd RPG-Threat-Intel-Honeypot
-   
-Install dependencies:
-
-   ```bash
-   pip install -r requirements.txt
-
-   ```
-   Run the honeypot:
-
-   ```bash
-   python src/app.py
-   ```
-# Disclaimer
-This project is built strictly for educational purposes and personal portfolio demonstration. It is meant to be run in a safe, controlled, and isolated environment. Do not use this code in production networks without proper security hardening.
