@@ -34,7 +34,7 @@ The ExploitSignatures engine monitors for the two distinct phases of the exploit
    git clone [https://github.com/YourUsername/RPG-Threat-Intel-Honeypot.git](https://github.com/YourUsername/RPG-Threat-Intel-Honeypot.git)
    cd RPG-Threat-Intel-Honeypot
 
-```
+   ```
 
 2. Build the Docker image:
 ```bash
@@ -73,10 +73,4 @@ Invoke-WebRequest -Uri "http://localhost:8080/index.php" -Method Post -Body "AAA
 
 This project is built strictly for educational purposes, Threat Intelligence research, and personal portfolio demonstration. It is meant to be run in a safe, controlled environment. Do not use this code in production networks without proper security hardening.
 
-```
 
-Con esto el proyecto queda 100% cerrado y empaquetado a nivel profesional. 
-
-<FollowUp label="Añadir el proyecto al CV o LinkedIn" query="¿Cómo redacto este proyecto para ponerlo de forma atractiva y profesional en mi currículum y en mi perfil de LinkedIn?"/>
-
-```
