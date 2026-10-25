@@ -58,8 +58,7 @@ To test the detection engine locally using PowerShell:
 **Simulate Phase 1 (OOM Trigger):**
 
 ```powershell
-Invoke-WebRequest -Uri "http://localhost:8080/index.php" -Method Post -Headers @{"Content-Length"="60000000"} -UserAgent "Wiz-Research-Probe" -UseBasicParsing
-
+curl.exe -X POST -H "Content-Length: 150000000" -A "Wiz-Research-Probe" http://localhost:8080/index.php
 ```
 
 **Simulate Phase 2 (UAF Payload):**
