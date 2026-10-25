@@ -42,7 +42,7 @@ Once the PHP engine is left in a stale state, the attacker attempts to inject ra
 Invoke-WebRequest -Uri "http://localhost:8080/index.php" -Method Post -Body "AAAAAAAAAAAAAAAAAAAA" -UserAgent "Wiz-Research-Probe" -UseBasicParsing
 ```
 
-![[Pasted image 20261025201112.png]]
+![[img/Pasted image 20261025201112.png]]
 
 
 ## 3. Results & Visualization
